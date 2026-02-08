@@ -48,7 +48,7 @@ int main(int argc, char const *argv[])
     int counter = 0;
     for (byte; byte != 0; byte >>= 1)
     {
-        if (byte & 1 == 1) ++counter;  
+        if (byte & 1) ++counter;  
     }
     cout << "Number of one-bits: " << counter << endl;
     return 0;
