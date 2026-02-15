@@ -8,7 +8,13 @@ echo TEST1: simple input
 echo ma
 echo mama
 echo asdmamamaasd
-) | %PROG%
+) > OF.txt
+%PROG% < OF.txt
+@REM (
+@REM echo ma
+@REM echo mama
+@REM echo asdmamamaasd
+@REM ) | %PROG%
 fc .\data\t1.txt .\data\out.txt || goto err
 echo.
 echo FILE INPUT
@@ -75,6 +81,7 @@ echo TEST9: not -h
 %PROG% -m
 echo.
 
+del OF.txt
 exit /b 0
 
 :err
