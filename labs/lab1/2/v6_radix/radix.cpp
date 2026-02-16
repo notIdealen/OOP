@@ -20,7 +20,7 @@ int stringToInt(const string& str, int radix)
     bool negative = false;
     for (char ch : str)
     {
-        if (ch == '-' && !negative) 
+        if (ch == '-' && !negative && num == 0) 
         {
             negative = true;
             continue;
@@ -44,12 +44,20 @@ int stringToInt(const string& str, int radix)
 int getRadixFromString(string str)
 {
     for (char ch : str)
-        if (ch < '0' || ch > '9') throw runtime_error("WRONG RADIX");
+        if (ch < '0' || ch > '9') throw runtime_error("INVALID RADIX");
 
-    int num = stringToInt(str, 10);
-    if (num < 2 || num > 35) throw runtime_error("WRONG RADIX");
-
-    return num;
+    try
+    {
+        int num = stringToInt(str, 10);
+        if (num < 2 || num > 35) throw runtime_error("INVALID RADIX");
+        return num;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << e.what() << '\n';
+        // throw e.what();
+        return 0;
+    }
 }
 
 string intToString(int n, int radix)
