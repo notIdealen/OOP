@@ -12,23 +12,25 @@ using namespace std;
 
 enum class OpenMode { input, output };
 
-void help()
+void Help()
 {
     cout << "OPISANIE DESCRIPTION.\n";
 }
 
-void openFile(fstream& file, OpenMode mode, string& path)
+// подавать отдельно ин и оут
+void OpenFile(fstream& file, OpenMode mode, string& path)
 {
     if (mode == OpenMode::input) file.open(path, ios::in);
     if (mode == OpenMode::output) file.open(path, ios::out);
     if (!file.is_open()) throw runtime_error("ERROR");
 }
 
-void replaceSubstring(const string& pattern, const string& filler, string& token)
+void ReplaceSubstring(const string& pattern, const string& filler, string& token)
 {
     size_t pos = 0;
-    if (filler.length() > pattern.length())
-        token.reserve(ceil(token.length() * filler.length() / pattern.length()) + 1);
+    // изменить способ уменьщ=шения колва релокаций? хрупко 
+    // if (filler.length() > pattern.length())
+    //     token.reserve(ceil(token.length() * filler.length() / pattern.length()) + 1);
     if (pattern != "")
         while ((pos = token.find(pattern, pos)) != string::npos)
         {
@@ -36,81 +38,146 @@ void replaceSubstring(const string& pattern, const string& filler, string& token
             pos += filler.length();
         }
 }
-
-void writeFile(istream& fromF, fstream& toF, string& pattern, string& filler)
+// заменить fstream на ostream, изменить названия параметров
+// одной фн открываю и на чтение и на запись поэтому использую fstream
+void WriteFile(istream& fromF, fstream& toF, string& pattern, string& filler)
 {
     string text;
     while (getline(fromF, text)) 
     {
         if (text.empty()) break;
-        replaceSubstring(pattern, filler, text);
+        ReplaceSubstring(pattern, filler, text);
         toF << text;
         toF << '\n';
     }
 }
 
-int main(int argc, char const *argv[])
+void UseModeWithOneArg(fstream& outF)
 {
-    auto start = chrono::high_resolution_clock::now();
-    if (argc == 2)
+    string outFPath = "./data/out.txt";
+    string pattern = "";
+    string filler = "";
+    try 
+    { 
+        OpenFile(outF, OpenMode::output, outFPath); 
+    }
+    catch(const std::exception& e)
     {
-        if (static_cast<string>(argv[1]) == "-h") help();
-        return 0;
+        cout << e.what() << endl;
     }
 
+    cout << "Input pattern:";
+    cin >> pattern;
+    cout << "Input new value:";
+    cin >> filler;
+    cout << "Input text:\n";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    WriteFile(cin, outF, pattern, filler);
+
+    outF.close();
+}
+
+void UseModeMoreThanThreeArgs(fstream& outF, string inFPath, string outFPath)
+{
+    fstream inF;
+    // string inFPath  = argv[1];
+    // outFPath = argv[2];
+    try 
+    { 
+        OpenFile(inF, OpenMode::input, inFPath); 
+        OpenFile(outF, OpenMode::output, outFPath);
+    }
+    catch(const std::exception& e)
+    {
+        cout << e.what() << endl;
+        return 1;
+    }
+
+    if (argc > 3) pattern = argv[3];
+    if (argc > 4) filler = argv[4];
+    
+    WriteFile(inF, outF, pattern, filler); 
+    inF.close();
+    outF.close();
+}
+
+int main(int argc, char const *argv[])
+{
     fstream outF;
     string outFPath;
     string pattern = "";
     string filler = "";
 
-    if (argc == 1)
+    auto start = chrono::high_resolution_clock::now();
+    switch (argc)
     {
-        outFPath = "./data/out.txt";
-        try 
-        { 
-            openFile(outF, OpenMode::output, outFPath); 
-        }
-        catch(const std::exception& e)
-        {
-            cout << e.what() << endl;
-            return 0;
-        }
+    case 1:
+        UseModeWithOneArg(outF);   
+        break;
+    case 2:
+        Help();
+        break;
+    case 3:
+    case 4:
+    case 5:
+        UseModeMoreThanThreeArgs(outF, argv[1], argv[2], argv[3], argv[4]);
+        break;
 
-        cout << "Input pattern:";
-        cin >> pattern;
-        cout << "Input new value:";
-        cin >> filler;
-        cout << "Input text:\n";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        writeFile(cin, outF, pattern, filler);
-
-        outF.close();
-        return 0;
     }
+    // if (argc == 2)
+    // {
+    //     if (static_cast<string>(argv[1]) == "-h") Help();
+    //     return 0;
+    // }
 
-    if (argc > 2)
-    {
-        fstream inF;
-        string inFPath  = argv[1];
-               outFPath = argv[2];
-        try 
-        { 
-            openFile(inF, OpenMode::input, inFPath); 
-            openFile(outF, OpenMode::output, outFPath);
-        }
-        catch(const std::exception& e)
-        {
-            cout << e.what() << endl;
-            return 1;
-        }
+    // if (argc == 1)
+    // {
+    //     outFPath = "./data/out.txt";
+    //     try 
+    //     { 
+    //         OpenFile(outF, OpenMode::output, outFPath); 
+    //     }
+    //     catch(const std::exception& e)
+    //     {
+    //         cout << e.what() << endl;
+    //         return 0;
+    //     }
 
-        if (argc > 3) pattern = argv[3];
-        if (argc > 4) filler = argv[4];
+    //     cout << "Input pattern:";
+    //     cin >> pattern;
+    //     cout << "Input new value:";
+    //     cin >> filler;
+    //     cout << "Input text:\n";
+    //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    //     WriteFile(cin, outF, pattern, filler);
+
+    //     outF.close();
+    //     return 0;
+    // }
+
+    // if (argc > 2)
+    // {
+    //     fstream inF;
+    //     string inFPath  = argv[1];
+    //            outFPath = argv[2];
+    //     try 
+    //     { 
+    //         OpenFile(inF, OpenMode::input, inFPath); 
+    //         OpenFile(outF, OpenMode::output, outFPath);
+    //     }
+    //     catch(const std::exception& e)
+    //     {
+    //         cout << e.what() << endl;
+    //         return 1;
+    //     }
+
+    //     if (argc > 3) pattern = argv[3];
+    //     if (argc > 4) filler = argv[4];
         
-        writeFile(inF, outF, pattern, filler); 
-        inF.close();
-        outF.close();
-    }
+    //     WriteFile(inF, outF, pattern, filler); 
+    //     inF.close();
+    //     outF.close();
+    // }
     auto end = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
     cout << "Time: " << duration.count() << " ms" << endl;

@@ -14,7 +14,7 @@ using namespace std;
 
 const string RADIXES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-int stringToInt(const string& str, int radix)
+int StringToInt(const string& str, int radix)
 {
     int num = 0;
     bool negative = false;
@@ -41,26 +41,35 @@ int stringToInt(const string& str, int radix)
     return num;
 }
 
-int getRadixFromString(string str)
+int GetRadixFromString(string str)
 {
+    // int n = 0;
+    // for (char ch : str)
+    // {
+    //     n *= 10;
+    //     if (ch < '0' || ch > '9') throw runtime_error("INVALID RADIX");
+    //     n += atoi(&ch);
+    // }
+    // if (n < 2 || n > 35) throw runtime_error("INVALID RADIX");
+    // return n;
+    //^^^new
     for (char ch : str)
         if (ch < '0' || ch > '9') throw runtime_error("INVALID RADIX");
 
     try
     {
-        int num = stringToInt(str, 10);
+        int num = StringToInt(str, 10);
         if (num < 2 || num > 35) throw runtime_error("INVALID RADIX");
         return num;
     }
     catch(const std::exception& e)
     {
         std::cout << e.what() << '\n';
-        // throw e.what();
         return 0;
     }
 }
 
-string intToString(int n, int radix)
+string IntToString(int n, int radix)
 {
     if (n == 0) return "0";
 
@@ -84,10 +93,10 @@ int main(int argc, char const *argv[])
     if (argc == 4)
         try
         {
-            int from = getRadixFromString(argv[1]);
-            int to = getRadixFromString(argv[2]);
-            int value = stringToInt(argv[3], from);
-            cout << intToString(value, to) << endl;
+            int from = GetRadixFromString(argv[1]);
+            int to = GetRadixFromString(argv[2]);
+            int value = StringToInt(argv[3], from);
+            cout << IntToString(value, to) << endl;
         }
         catch(const std::exception& e)
         {

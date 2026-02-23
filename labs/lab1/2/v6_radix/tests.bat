@@ -34,7 +34,7 @@ set "EXPECTED=INT Overflow"
 for /f "delims=" %%i in ('%PROG% %RADFROM% %RADTO% %VALUE% 2^>nul') do (set "RESULT=%%i")
 if "%RESULT%"=="%EXPECTED%" (echo [OK] valid) else (goto err)
 echo ------------------------------------------
-echo TEST5: 10 2 MIXINT
+echo TEST5: 10 2 MININT
 set "RADFROM=10"
 set "RADTO=2"
 set "VALUE=-2147483648"
@@ -42,7 +42,7 @@ set "EXPECTED=-10000000000000000000000000000000"
 for /f "delims=" %%i in ('%PROG% %RADFROM% %RADTO% %VALUE% 2^>nul') do (set "RESULT=%%i")
 if "%RESULT%"=="%EXPECTED%" (echo [OK] valid) else (goto err)
 echo ------------------------------------------
-echo TEST6: 10 2 MIXINT-1
+echo TEST6: 10 2 MININT-1
 set "RADFROM=10"
 set "RADTO=2"
 set "VALUE=-2147483649"
@@ -81,11 +81,14 @@ echo TEST10: %RADFROM% %RADTO% %VALUE% (invalid value)
 set "EXPECTED=INVALID VALUE"
 for /f "delims=" %%i in ('%PROG% %RADFROM% %RADTO% %VALUE% 2^>nul') do (set "RESULT=%%i")
 if "%RESULT%"=="%EXPECTED%" (echo [OK] valid) else (goto err)
-
-echo Сделать тест с отрицательным числом
-
-
-
+echo ------------------------------------------
+set "RADFROM=2"
+set "RADTO=35"
+set "VALUE=-11111110"
+echo TEST11: %RADFROM% %RADTO% %VALUE% (negative value)
+set "EXPECTED=-79"
+for /f "delims=" %%i in ('%PROG% %RADFROM% %RADTO% %VALUE% 2^>nul') do (set "RESULT=%%i")
+if "%RESULT%"=="%EXPECTED%" (echo [OK] valid) else (goto err)
 
 exit /b 0
 

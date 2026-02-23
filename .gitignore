@@ -1,5 +1,6 @@
-lections/
 .gitignore
+lections/
 video/
+archive/
 
 *.exe
