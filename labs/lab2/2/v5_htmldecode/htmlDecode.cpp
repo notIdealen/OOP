@@ -1,43 +1,54 @@
-//
-// g++ htmlDecode.cpp -o decode.exe
 #include <iostream>
-#include <sstream>
+#include <map>
 
 using namespace std;
-
-void ReplaceSpecialText(string& line, string code, string ch)
+// Что с названием???
+string HtmlDecode(const string& html)
 {
-    size_t pos{};
-    while ((pos = line.find(code, pos)) != string::npos)
-    {
-        line.replace(pos, code.length(), ch);
-        pos += ch.length();
-    }
-}
+    string htmlLine;
+    htmlLine.reserve(html.size());
 
-string HtmlDecode(string const& html)
-{
-    string decodeLine;
-    string decodeHTML;
-    stringstream ss(html);
-    while (getline(ss, decodeLine))
-    {
-        ReplaceSpecialText(decodeLine, "&quot", "\"");
-        ReplaceSpecialText(decodeLine, "&apos", "'");
-        ReplaceSpecialText(decodeLine, "&lt", "<");
-        ReplaceSpecialText(decodeLine, "&gt", ">");
-        ReplaceSpecialText(decodeLine, "&amp", "&");
-        decodeHTML.append(decodeLine).append("\n");
-    }
-    return decodeHTML;
-}
+    const map<string, string> templates = {
+        {"&quot", "\""}, {"&apos", "'"}, {"&lt", "<"}, {"&gt", ">"}, {"&amp", "&"}};
 
-string htmlEn =
-    "&ltH1&gtMain title &amp book name&lt/H1&gt\n"
-    "&ltp&gt&quotSome&quot text for me &aposIn Apostrofs: `&quot &apos &lt &gt &amp`&lt/p&gt";
+    bool matchFound = false;
+
+    for (size_t i = 0; i < html.size();)
+    {
+        if (html[i] == '&')
+        {
+            for (const auto& [k, v] : templates)
+            {
+                if (html.substr(i, k.size()) == k)
+                {
+                    matchFound = true;
+                    htmlLine.append(v);
+                    i = i + k.size() - 1;// сделал так чтобы уменьшить кол-во строк на 5
+                    break;
+                }
+                matchFound = false;
+            }
+            if (!matchFound) htmlLine += html[i];// можно убрать else, оставить только этот иф
+        }
+        else htmlLine += html[i];
+        ++i;
+    }
+    return htmlLine;
+}
 
 int main(int argc, char const* argv[])
 {
-    cout << HtmlDecode(htmlEn);
+    string htmlDecodeLine;
+    string line;
+    while (getline(cin, line))
+    {
+        if (line == "") break;
+        htmlDecodeLine.append(HtmlDecode(line)).append("\n");
+    }
+    cout << "----------------------------------------------------\n";
+    cout << htmlDecodeLine << endl;
     return 0;
 }
+// g++ htmlDecode.cpp -o decode.exe
+// .\decode.exe data/in.txt > data/out.txt
+// Get-Content data/in.txt | .\decode.exe

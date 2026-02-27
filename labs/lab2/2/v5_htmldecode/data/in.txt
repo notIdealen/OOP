@@ -1,0 +1,2 @@
+&ltH1&gtMain title &amp &lA book &QUOT name&lt/H1&gt
+&ltp&gt&quotSome&quot text for me &aposIn Apostrofs: `&quot &apos &lt &gt &amp`&lt/p&gt
