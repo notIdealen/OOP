@@ -6,21 +6,26 @@ using namespace std;
 
 constexpr int BUFFER_SIZE = 10;
 
-int StringToInt(const string& key)
+// int StringToInt(const string& key)
+// {
+//     constexpr unsigned char MAX_CHAR = 255;
+//     constexpr char RADIX = 10;
+//     constexpr char DIGIT_OFFSET = 48;
+//     int num = 0;
+//     char digit = '0';
+//     for (const unsigned char& ch : key)
+//     {
+//         if (ch < '0' || ch > '9') throw runtime_error("INVALID VALUE");
+//         digit = ch - DIGIT_OFFSET;
+//         if ((MAX_CHAR - digit) / RADIX  >= num) num = num * RADIX + digit;
+//         else throw runtime_error("INT Overflow");
+//     }
+//     return num;
+// }
+
+void IsValidKey(int key)
 {
-    constexpr unsigned char MAX_CHAR = 255;
-    constexpr char RADIX = 10;
-    constexpr char DIGIT_OFFSET = 48;
-    int num = 0;
-    char digit = '0';
-    for (const unsigned char& ch : key)
-    {
-        if (ch < '0' || ch > '9') throw runtime_error("INVALID VALUE");
-        digit = ch - DIGIT_OFFSET;
-        if ((MAX_CHAR - digit) / RADIX  >= num) num = num * RADIX + digit;
-        else throw runtime_error("INT Overflow");
-    }
-    return num;
+    if (key < 0 && 255 < key) throw runtime_error("INVALID KEY");
 }
 
 void OpenFileForRead(ifstream& file, string path)
@@ -46,27 +51,30 @@ bool ReadLine(ifstream& from, string& line, char* buf)
     return false;
 }
 
+void EncryptLine(string& line, const char key)
+{
+    for (char& ch : line)
+    {
+        ch = ch ^ key;
+        ch = (ch & 0b1100'0000) >> 3 | (ch & 0b0001'1100) >> 2 | (ch & 0b0010'0000) << 2 | (ch & 0b0000'0011) << 5;
+    }
+    return;
+}
+
+void DecryptLine(string& line, const char key)
+{
+    for (char& ch : line)
+    {
+        ch = (ch << 3) & 0b1100'0000 | (ch << 2) & 0b0001'1100 | (ch >> 2) & 0b0010'0000 | (ch >> 5) & 0b0000'0011;
+        ch = ch ^ key;
+    }
+}
+
 void CryptLine(string& line, const string mode, const char key)
 {
-    if (mode == "crypt")
-    {
-        for (char& ch : line)
-        {
-            ch = ch ^ key;
-            ch = (ch & 0b1100'0000) >> 3 | (ch & 0b0001'1100) >> 2 | (ch & 0b0010'0000) << 2 | (ch & 0b0000'0011) << 5;
-        }
-        return;
-    }
-    if (mode == "decrypt")
-    {
-        for (char& ch : line)
-        {
-            ch = (ch << 3) & 0b1100'0000 | (ch << 2) & 0b0001'1100 | (ch >> 2) & 0b0010'0000 | (ch >> 5) & 0b0000'0011;
-            ch = ch ^ key;
-        }
-        return;
-    }
-    throw runtime_error("INVALID MODE");
+    if (mode == "crypt") EncryptLine(line, key);
+    else if (mode == "decrypt") DecryptLine(line, key);
+    else throw runtime_error("INVALID MODE");
 }
 
 int main(int argc, char const *argv[])
@@ -83,8 +91,12 @@ int main(int argc, char const *argv[])
             string line;
             line.reserve(BUFFER_SIZE);
             char buf[BUFFER_SIZE];
-            
-            const unsigned char key = StringToInt(argv[4]);
+            // ОСТАНОВИЛСЯ НА ПРОВЕРКЕ КЛЮЧА
+            // const unsigned char key = StringToInt(argv[4]);// использовать stoi
+            const unsigned char key = stoi(argv[4]);// использовать stoi
+            // IsValidKey(key);
+            // cout << 
+            if (key < 0 && 255 < key) {cout << "!!!!" << key << endl; throw runtime_error("INVALID KEY");}
             while (ReadLine(from, line, buf))
             {
                 CryptLine(line, argv[1], key);
@@ -108,4 +120,4 @@ int main(int argc, char const *argv[])
 }
 //g++ crypt.cpp -o crypt.exe
 //.\crypt.exe crypt data/text.bin data/en.bin 93
-//.\crypt.exe decrypt data/en.bin data/de.bin 93
+//.\crypt.exe decrypt data/en.bin data/de.bin 260

@@ -2,35 +2,36 @@
 #include <map>
 
 using namespace std;
-// Что с названием???
-string HtmlDecode(const string& html)
+
+const map<string, string> templates = {
+    {"&quot", "\""}, {"&apos", "'"}, {"&lt", "<"}, {"&gt", ">"}, {"&amp", "&"}};
+//на подфункции
+// сущ заканчиваются ;
+string DecodeHTML(const string& html)
 {
     string htmlLine;
     htmlLine.reserve(html.size());
-
-    const map<string, string> templates = {
-        {"&quot", "\""}, {"&apos", "'"}, {"&lt", "<"}, {"&gt", ">"}, {"&amp", "&"}};
-
     bool matchFound = false;
 
     for (size_t i = 0; i < html.size();)
     {
         if (html[i] == '&')
         {
-            for (const auto& [k, v] : templates)
+            for (const auto& [key, value] : templates)
             {
-                if (html.substr(i, k.size()) == k)
+                if (html.substr(i, key.size()) == key)
                 {
                     matchFound = true;
-                    htmlLine.append(v);
-                    i = i + k.size() - 1;// сделал так чтобы уменьшить кол-во строк на 5
+                    htmlLine.append(value);
+                    i = i + key.size() - 1;// сделал так чтобы уменьшить кол-во строк на 5, уберу -1
                     break;
                 }
                 matchFound = false;
             }
             if (!matchFound) htmlLine += html[i];// можно убрать else, оставить только этот иф
         }
-        else htmlLine += html[i];
+        else
+            htmlLine += html[i];
         ++i;
     }
     return htmlLine;
@@ -43,7 +44,7 @@ int main(int argc, char const* argv[])
     while (getline(cin, line))
     {
         if (line == "") break;
-        htmlDecodeLine.append(HtmlDecode(line)).append("\n");
+        htmlDecodeLine.append(DecodeHTML(line)).append("\n");
     }
     cout << "----------------------------------------------------\n";
     cout << htmlDecodeLine << endl;

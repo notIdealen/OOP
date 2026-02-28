@@ -52,7 +52,7 @@ echo TEST7: invalid args number
 set "IF=./data/textMS.bin"
 set "ENF=./data/en.bin"
 set "DEF=./data/de.bin"
-set "KEY=256"
+set "KEY=251"
 %PROG% %IF% %ENF% %KEY%
 echo ------------------------------------------
 echo TEST8: empty input
