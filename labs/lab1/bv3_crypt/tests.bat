@@ -64,6 +64,25 @@ set "KEY=93"
 %PROG% decrypt %ENF% %DEF% %KEY%
 fc .\data\empty.bin .\data\de.bin || goto err
 echo ------------------------------------------
+echo TEST9: Stress test 95MB
+set "IF=./data/stress.txt"
+set "ENF=./data/en.bin"
+set "DEF=./data/de.bin"
+set "KEY=93"
+echo %time%
+%PROG% crypt %IF% %ENF% %KEY%
+%PROG% decrypt %ENF% %DEF% %KEY%
+echo %time%
+echo ------------------------------------------
+echo TEST10: Crypt EXE
+set "IF=crypt.exe"
+set "ENF=./data/en.bin"
+set "DEF=./data/crypt.bin"
+set "KEY=93"
+%PROG% crypt %IF% %ENF% %KEY%
+%PROG% decrypt %ENF% %DEF% %KEY%
+fc .\crypt.exe .\data\crypt.bin || goto err
+echo ------------------------------------------
 
 exit /b 0
 

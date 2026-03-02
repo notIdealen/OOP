@@ -1,2 +1,3 @@
-&ltH1&gtMain title &amp &lA book &QUOT name&lt/H1&gt
-&ltp&gt&quotSome&quot text for me &aposIn Apostrofs: `&quot &apos &lt &gt &amp`&lt/p&gt
+&lt;H1&gt;Main &&&;; title &amp &amp; &lA book &QUOT name&lt;/H1&gt;
+&lt;p&gt;&quot;Some&quot; text for me &apos;In Apostrofs:&quot;+&apos;+&lt;+&gt;+&amp;&lt;/p&gt;
+&lt

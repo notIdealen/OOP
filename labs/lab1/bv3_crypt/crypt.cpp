@@ -4,28 +4,11 @@
 
 using namespace std;
 
-constexpr int BUFFER_SIZE = 10;
-
-// int StringToInt(const string& key)
-// {
-//     constexpr unsigned char MAX_CHAR = 255;
-//     constexpr char RADIX = 10;
-//     constexpr char DIGIT_OFFSET = 48;
-//     int num = 0;
-//     char digit = '0';
-//     for (const unsigned char& ch : key)
-//     {
-//         if (ch < '0' || ch > '9') throw runtime_error("INVALID VALUE");
-//         digit = ch - DIGIT_OFFSET;
-//         if ((MAX_CHAR - digit) / RADIX  >= num) num = num * RADIX + digit;
-//         else throw runtime_error("INT Overflow");
-//     }
-//     return num;
-// }
+constexpr int BUFFER_SIZE = 4096;
 
 void IsValidKey(int key)
 {
-    if (key < 0 && 255 < key) throw runtime_error("INVALID KEY");
+    if (key < 0 || 255 < key) throw runtime_error("INVALID KEY");
 }
 
 void OpenFileForRead(ifstream& file, string path)
@@ -58,7 +41,6 @@ void EncryptLine(string& line, const char key)
         ch = ch ^ key;
         ch = (ch & 0b1100'0000) >> 3 | (ch & 0b0001'1100) >> 2 | (ch & 0b0010'0000) << 2 | (ch & 0b0000'0011) << 5;
     }
-    return;
 }
 
 void DecryptLine(string& line, const char key)
@@ -91,12 +73,8 @@ int main(int argc, char const *argv[])
             string line;
             line.reserve(BUFFER_SIZE);
             char buf[BUFFER_SIZE];
-            // ОСТАНОВИЛСЯ НА ПРОВЕРКЕ КЛЮЧА
-            // const unsigned char key = StringToInt(argv[4]);// использовать stoi
-            const unsigned char key = stoi(argv[4]);// использовать stoi
-            // IsValidKey(key);
-            // cout << 
-            if (key < 0 && 255 < key) {cout << "!!!!" << key << endl; throw runtime_error("INVALID KEY");}
+            const int key = stoi(argv[4]);
+            IsValidKey(key);
             while (ReadLine(from, line, buf))
             {
                 CryptLine(line, argv[1], key);
@@ -119,5 +97,5 @@ int main(int argc, char const *argv[])
     return 0;
 }
 //g++ crypt.cpp -o crypt.exe
-//.\crypt.exe crypt data/text.bin data/en.bin 93
-//.\crypt.exe decrypt data/en.bin data/de.bin 260
+//.\crypt.exe crypt data/kniga.txt data/en.bin 93
+//.\crypt.exe decrypt data/en.bin data/de.bin 93
