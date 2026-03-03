@@ -16,7 +16,7 @@ void PrintMatrix3x3(Matrix3x3 &matrix)
             cout << fixed << setprecision(3) << el << "\t";
         cout << endl;
     }
-    cout << endl;
+    // cout << endl;
 }
 
 Matrix3x3 MulMatrix3x3(Matrix3x3 &m1, Matrix3x3 &m2)
@@ -116,8 +116,8 @@ int main(int argc, char const *argv[])
     }
     catch(const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
-        return 1;
+        std::cout << e.what() << '\n';
+        return 0;
     }
     Matrix3x3 &&result = MulMatrix3x3(m1, m2);
     PrintMatrix3x3(result);
