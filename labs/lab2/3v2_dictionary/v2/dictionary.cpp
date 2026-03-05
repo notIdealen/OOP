@@ -11,7 +11,15 @@ int main(int argc, char const* argv[])
 
     MultiDictionary dic;
     MultiDictionary tempDic;
-    LoadDictionary(argv[1], dic);
+    try
+    {
+        LoadDictionary(argv[1], dic);
+    }
+    catch (const std::exception& e)
+    {
+        std::cout << e.what() << '\n';
+        return 0;
+    }
 
     string word;
     do
@@ -19,7 +27,7 @@ int main(int argc, char const* argv[])
         cout << "Введите слово/словосочетание: (для выхода введите '...')\n";
         word = GetWord();
         if (word == "" || word == "...") continue;
-        
+
         if (dic.count(word))
             PrintTranslation(dic, word);
         else if (tempDic.count(word))
@@ -33,8 +41,7 @@ int main(int argc, char const* argv[])
             else
                 cout << "Слово " << word << " проигнорировано.\n";
         }
-    }
-    while (word != "...");
+    } while (word != "...");
     if (!tempDic.empty())
     {
         cout << "В словарь были внесены изменения. Введите Y или y для сохранения перед выходом.\n";

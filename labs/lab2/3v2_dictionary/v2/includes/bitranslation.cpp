@@ -15,7 +15,7 @@ std::string GetWord()
 {
     std::string word;
     getline(cin, word);
-    TrimSpace(word);
+    if (!word.empty()) TrimSpace(word);
     for (char& ch : word) ch = tolower(ch);
     return word;
 }
@@ -81,8 +81,3 @@ void LoadDictionary(string path, MultiDictionary& dic)
     if (!file.eof()) throw runtime_error("INVALID reading: LoadDictionary");
     file.close();
 }
-
-// void PrintReverseTranslation(MultiDictionary& dic, std::string word)
-// {
-    
-// }

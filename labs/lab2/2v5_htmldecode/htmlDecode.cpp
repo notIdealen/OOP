@@ -13,10 +13,9 @@ int main(int argc, char const* argv[])
         if (line == "") break;
         htmlDecodeLine.append(DecodeHTML(line)).append("\n");
     }
-    cout << "----------------------------------------------------\n";
     cout << htmlDecodeLine << endl;
     return 0;
 }
 // g++ htmlDecode.cpp includes/decodehtml.cpp -o decode.exe
 // .\decode.exe data/in.txt > data/out.txt
-// Get-Content data/in.txt | .\decode.exe
+// Get-Content data/in.txt | .\decode.exe | Out-File data/out.txt
