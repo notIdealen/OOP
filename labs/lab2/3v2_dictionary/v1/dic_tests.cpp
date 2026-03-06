@@ -2,9 +2,10 @@
 #include <iostream>
 
 #include "catch/catch.hpp"
-#include "includes/translation.hpp"
+#include "includes/bitranslation.cpp"
 
 using namespace std;
+
 
 TEST_CASE("Get word from input")
 {
@@ -27,4 +28,4 @@ TEST_CASE("Save word to dictionary")
 }
 
 
-// g++ dic_tests.cpp includes/translation.cpp -o tests.exe
+// g++ dic_tests.cpp -o tests.exe

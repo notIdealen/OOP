@@ -1,12 +1,18 @@
-#include "translation.hpp"
-#include <sstream>
 #include <fstream>
+#include <sstream>
+
+#include "translation.hpp"
 
 using namespace std;
 
 void TrimSpace(string& s)
 {
     size_t start = s.find_first_not_of(' ');
+    if (start == string::npos)
+    {
+        s = "";
+        return;
+    }
     size_t end = s.find_last_not_of(' ');
     s = s.substr(start, end - start + 1);
 }
@@ -23,8 +29,9 @@ std::string GetWord()
 void PrintTranslation(MultiDictionary& dic, string word)
 {
     auto range = dic.equal_range(word);
-    
-    for (auto it = range.first; it != range.second;) {
+
+    for (auto it = range.first; it != range.second;)
+    {
         cout << it->second;
         ++it;
         if (it != range.second) cout << ", ";

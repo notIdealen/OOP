@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "catch/catch.hpp"
-#include "includes/translation.hpp"
+#include "includes/bitranslation.cpp"
 #include <sstream>
 
 using namespace std;
@@ -72,4 +72,14 @@ TEST_CASE("Save dictionary")
     REQUIRE(dic.empty() != true);
 }
 
-// g++ dic_tests.cpp includes/bitranslation.cpp -o tests.exe
+TEST_CASE("Trime spaces")
+{
+    string test1 = "  qw e   ";
+    TrimSpace(test1);
+    REQUIRE(test1 == "qw e");
+    string test2 = "  ";
+    TrimSpace(test2);
+    REQUIRE(test2 == "");
+}
+
+// g++ dic_tests.cpp -o tests.exe

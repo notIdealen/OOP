@@ -7,7 +7,7 @@ oop info
 - ✓ дописать тесты к dictionary
 
 6-03-26
-- lab1 multmatrix
-- lab1 crypt
+- ✓ lab1 multmatrix
+- ✓ lab1 crypt
 - lab2 dictionary
-- lab2 htmldecode
+- ✓ lab2 htmldecode
