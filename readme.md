@@ -9,5 +9,5 @@ oop info
 6-03-26
 - ✓ lab1 multmatrix
 - ✓ lab1 crypt
-- lab2 dictionary
+- ✓ lab2 dictionary
 - ✓ lab2 htmldecode
