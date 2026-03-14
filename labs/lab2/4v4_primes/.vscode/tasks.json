@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "c++ build",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                // "-g",//флаг отладки
+                "${workspaceFolder}/primes.cpp",
+                "${workspaceFolder}/includes/Generator.cpp",
+                "-o", 
+                "${workspaceFolder}/primes",
+                "-I", "D:/_OOP/labs/catch"
+            ],
+            "group": {
+                "kind": "build", 
+                "isDefault": true,
+            }
+        }
+    ]
+}

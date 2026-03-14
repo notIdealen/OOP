@@ -25,8 +25,8 @@ std::string GetWord()
     for (char& ch : word) ch = tolower(ch);
     return word;
 }
-//
-void PrintTranslation(MultiDictionary& dic, string word)
+
+void PrintTranslation(MultiDictionary& dic, const string word)
 {
     auto range = dic.equal_range(word);
 
@@ -39,7 +39,7 @@ void PrintTranslation(MultiDictionary& dic, string word)
     cout << endl;
 }
 
-string SaveWord(MultiDictionary& dic, string word)
+string SaveWord(MultiDictionary& dic, const string word)
 {
     string translations, translation;
     getline(cin, translations);
@@ -55,7 +55,7 @@ string SaveWord(MultiDictionary& dic, string word)
     return translations;
 }
 
-void SaveDictionary(string path, MultiDictionary& dic)
+void SaveDictionary(const string path, MultiDictionary& dic)
 {
     ofstream file(path, ios::app);
     if (!file.is_open()) throw runtime_error("INVALID output file path: " + path);
@@ -70,7 +70,7 @@ void SaveDictionary(string path, MultiDictionary& dic)
     file.close();
 }
 
-void LoadDictionary(string path, MultiDictionary& dic)
+void LoadDictionary(const string path, MultiDictionary& dic)
 {
     ifstream file(path);
     if (!file.is_open()) throw runtime_error("INVALID dictionary path: " + path);

@@ -48,6 +48,14 @@ set "EXPECTED=INVALID number of args"
 for /f "delims=" %%i in ('%PROG% %PATH1% 2^>nul') do (set "RESULT=%%i")
 if "%RESULT%"=="%EXPECTED%" (echo [OK] valid) else (goto err)
 echo.
+echo -----------------------------------------
+echo TEST7: INVALID number in matrix
+set "PATH1=data/msimp1.txt"
+set "PATH2=data/minvalid.txt"
+set "EXPECTED=ERROR"
+for /f "delims=" %%i in ('%PROG% %PATH1% %PATH2% 2^>nul') do (set "RESULT=%%i")
+if "%RESULT%"=="%EXPECTED%" (echo [OK] valid) else (goto err)
+echo.
 
 exit /b 0
 

@@ -34,3 +34,9 @@ house>дом
 дом>house
 собака>dog
 собачка>dog
+dog>собака
+dog>собачка
+house>дом
+дом>house
+собака>dog
+собачка>dog

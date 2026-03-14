@@ -9,7 +9,7 @@ using namespace std;
 
 TEST_CASE("Get word from input")
 {
-    cout << "Input 'slon', input '...' and input empty string" << endl;
+    cout << "Input 'sLoN', input '...' and input empty string" << endl;
     REQUIRE(GetWord() == "slon");
     REQUIRE(GetWord() == "...");
     REQUIRE(GetWord() == "");

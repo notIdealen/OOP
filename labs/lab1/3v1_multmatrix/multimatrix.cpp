@@ -8,7 +8,7 @@ using namespace std;
 constexpr int MATRIX_SIZE = 3;
 using Matrix3x3 = array<array<double, MATRIX_SIZE>, MATRIX_SIZE>;
 
-void PrintMatrix3x3(Matrix3x3 &matrix)
+void PrintMatrix3x3(const Matrix3x3 &matrix)
 {
     for (const auto &row : matrix)
     {
@@ -16,10 +16,9 @@ void PrintMatrix3x3(Matrix3x3 &matrix)
             cout << fixed << setprecision(3) << el << "\t";
         cout << endl;
     }
-    // cout << endl;
 }
 
-Matrix3x3 MulMatrix3x3(Matrix3x3 &m1, Matrix3x3 &m2)
+Matrix3x3 MulMatrix3x3(const Matrix3x3 &m1, const Matrix3x3 &m2)
 {
     Matrix3x3 result{};
     for (size_t i = 0; i < MATRIX_SIZE; ++i)
@@ -29,7 +28,7 @@ Matrix3x3 MulMatrix3x3(Matrix3x3 &m1, Matrix3x3 &m2)
     return result;
 }
 
-void OpenFileForRead(ifstream &file, string &path)
+void OpenFileForRead(ifstream &file, const string &path)
 {
     file.open(path);
     if (!file.is_open())
@@ -41,7 +40,7 @@ void CreateMatrix3x3(istream &file, Matrix3x3 &matrix)
     for (size_t i = 0; i < MATRIX_SIZE; ++i)
         for (size_t j = 0; j < MATRIX_SIZE; ++j)
             if (!(file >> matrix[i][j]))
-                throw runtime_error("ERROR");
+                throw invalid_argument("ERROR");
 
     if (!file.eof() && file.fail())
         throw runtime_error("INVALID reading");
@@ -65,35 +64,37 @@ void CalculateMatrixFromInput(Matrix3x3 &m1, Matrix3x3 &m2)
     ReadInput(matrix2);
 
     stringstream ss;
-    try
-    {
+    // try
+    // {
         ss << matrix1;
         CreateMatrix3x3(ss, m1);
         ss << matrix2;
         CreateMatrix3x3(ss, m2);
-    }
-    catch (const std::exception &e)
-    {
-        throw runtime_error(e.what());
-    }
+    // }
+    // catch (const std::exception &e)
+    // {
+    //     throw runtime_error("CalculateMatrixFromInput:" + static_cast<string>(e.what()));
+    //     // throw runtime_error(e.what() + "from CalculateMatrixFromInput");
+    // }
 }
 
-void CalculateMatrixFromFiles(Matrix3x3 &m1, Matrix3x3 &m2, string &&path1, string &&path2)
+void CalculateMatrixFromFiles(Matrix3x3 &m1, Matrix3x3 &m2, const string &&path1, const string &&path2)
 {
     ifstream inF1, inF2;
-    try
-    {
+    // try
+    // {
         OpenFileForRead(inF1, path1);
         CreateMatrix3x3(inF1, m1);
         inF1.close();
         OpenFileForRead(inF2, path2);
         CreateMatrix3x3(inF2, m2);
         inF2.close();
-    }
-    catch (const std::exception &e)
-    {
-        throw runtime_error(e.what());
-    }
+    // }
+    // catch (const std::exception &e)
+    // {
+    //     throw runtime_error("CalculateMatrixFromFiles:" + static_cast<string>(e.what()));
+    //     // throw runtime_error("CalculateMatrixFromFiles:" + e.what());
+    // }
 }
 
 int main(int argc, char const *argv[])

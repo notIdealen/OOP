@@ -1,4 +1,4 @@
-#include "decodehtml.hpp"
+#include "Decodehtml.hpp"
 
 #include <iostream>
 #include <map>
@@ -8,16 +8,18 @@ using namespace std;
 const map<string, string> ENTITIES = {
     {"&quot;", "\""}, {"&apos;", "'"}, {"&lt;", "<"}, {"&gt;", ">"}, {"&amp;", "&"}};
 
+const char START_ENTITY = '&';
 constexpr int MAX_SIZE_ENTITY = 6;
 
-string GetEntity(const string& html, size_t& i) 
+string GetEntity(const string& html, size_t& i)
 {
-    string entity = "&";
+    string entity;
+    entity = START_ENTITY;
     entity.reserve(MAX_SIZE_ENTITY);
     ++i;
     while (i != html.size())
     {
-        if (html[i] == '&') break;
+        if (html[i] == START_ENTITY) break;
         entity += html[i];
         if (html[i] == ';')
         {
@@ -44,7 +46,7 @@ string DecodeHTML(const string& html)
 
     for (size_t i = 0; i < html.size();)
     {
-        if (html[i] == '&')
+        if (html[i] == START_ENTITY)
         {
             InsertEntity(htmlLine, GetEntity(html, i));
             continue;

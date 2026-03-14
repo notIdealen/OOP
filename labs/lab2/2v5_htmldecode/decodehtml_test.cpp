@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_MAIN
-#include "includes/decodehtml.cpp"
+#include "includes/Decodehtml.cpp"
 
 #include <iostream>
 
@@ -45,6 +45,9 @@ TEST_CASE("Get entity")
     string entity5 = "&&&;;";
     size_t i5 = 0;
     REQUIRE(GetEntity(entity5, i5) == "&");
+    string entity6 = "quot;";//<---
+    size_t i6 = 0;
+    REQUIRE(GetEntity(entity6, i6) == "&uot;");
 }
 
 TEST_CASE("Insert entity")
