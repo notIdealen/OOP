@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "c++ build",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                // "-g",//флаг отладки
+                "${workspaceFolder}/main.cpp",
+                "${workspaceFolder}/includes/Car.cpp",
+                "-o", 
+                "${workspaceFolder}/car",
+                "-I", "D:/_OOP/labs/catch"
+            ],
+            "group": {
+                "kind": "build", 
+                "isDefault": true,
+            }
+        },
+        {
+            "label": "TEST",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "${workspaceFolder}/car_tests.cpp",
+                "${workspaceFolder}/includes/Car.cpp",
+                "-o", 
+                "${workspaceFolder}/car_tests",
+                "-I", "D:/_OOP/labs/catch"
+            ],
+            "group": {
+                "kind": "build", 
+                "isDefault": true,
+            }
+        }
+    ]
+}
