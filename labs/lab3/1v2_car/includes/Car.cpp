@@ -5,15 +5,7 @@
 
 using namespace CarParameter;
 
-Car::Car(/* args */)
-{
-}
-
-Car::~Car()
-{
-}
-
-bool Car::isTurnedOn()
+bool Car::IsTurnedOn()
 {
     return m_isEngineRun;
 }
@@ -83,19 +75,6 @@ bool Car::IsSpeedAndGearConsistent(int gear, int speed) const
     return false;
 }
 
-// bool Car::SetGear(int gear)
-// {
-//     if (m_isEngineRun && CarParameter::minGear <= gear && gear <= CarParameter::maxGear)
-//     {
-//         if (IsSpeedAndGearConsistent(gear, m_speed))
-//         {
-//             m_gear = gear;
-//             return true;
-//         }
-//     }
-//     return false;
-// };
-
 void Car::SetGearWithThrow(int gear)
 {
     if (!m_isEngineRun)
@@ -114,7 +93,7 @@ void Car::SetGearWithThrow(int gear)
 
 bool Car::SetSpeed(int speed)
 {
-    if (m_isEngineRun)
+    if (m_isEngineRun && 0 <= speed)
     {
         if (IsSpeedAndGearConsistent(m_gear, speed))
         {

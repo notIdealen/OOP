@@ -8,7 +8,8 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "${workspaceFolder}/main.cpp",
-                // "${workspaceFolder}/includes/Car.cpp",
+                "${workspaceFolder}/includes/Calculator.cpp",
+                // "${workspaceFolder}/includes/Parser.cpp",
                 "-o", 
                 "${workspaceFolder}/calc",
             ],
@@ -24,10 +25,10 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${workspaceFolder}/main.cpp",
-                // "${workspaceFolder}/includes/Car.cpp",
+                "${workspaceFolder}/dbg.cpp",
+                "${workspaceFolder}/includes/InputParser.cpp",
                 "-o", 
-                "${workspaceFolder}/calc",
+                "${workspaceFolder}/dbg",
             ],
             "group": {
                 "kind": "build", 
@@ -40,10 +41,10 @@
             "command": "g++",
             "args": [
                 "-fdiagnostics-color=always",
-                "${workspaceFolder}/car_tests.cpp",
-                // "${workspaceFolder}/includes/Car.cpp",
+                "${workspaceFolder}/calc_tests.cpp",
+                "${workspaceFolder}/includes/InputParser.cpp",
                 "-o", 
-                "${workspaceFolder}/car_tests",
+                "${workspaceFolder}/calc_tests",
                 "-I", "D:/_OOP/labs/catch"
             ],
             "group": {

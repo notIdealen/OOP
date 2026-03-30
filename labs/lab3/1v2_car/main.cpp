@@ -4,9 +4,8 @@
 #include "includes/Car.hpp"
 
 using namespace std;
-//
-//Все строки ошибок и прочие строки заменить переменными!
-//
+
+//вынести в класс
 int main(int argc, char const *argv[])
 {
     Car car;
@@ -16,7 +15,7 @@ int main(int argc, char const *argv[])
     while (getline(cin, line))
     {
         if (line.empty()) break;
-        cout << line << endl;//удалить потом
+        // cout << line << endl;//удалить потом
         stringstream ss(line);
         string action = "";
 
@@ -58,7 +57,7 @@ int main(int argc, char const *argv[])
                     cout << "> " << "Speed cannot be negative\n";
                     continue;
                 }
-                if (!car.isTurnedOn())
+                if (!car.IsTurnedOn())
                 {
                     cout << "> " << "Cannot set speed while engine is off\n";
                     continue;

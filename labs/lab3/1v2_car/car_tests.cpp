@@ -25,10 +25,10 @@ TEST_CASE("EngineOn/Off")
     Car car;
     SECTION("TurnOnEngine")
     {
-        REQUIRE(!car.isTurnedOn());
+        REQUIRE(!car.IsTurnedOn());
         REQUIRE(car.TurnOffEngine());
         REQUIRE(car.TurnOnEngine());
-        REQUIRE(car.isTurnedOn());
+        REQUIRE(car.IsTurnedOn());
     }
     SECTION("TurnOffEngine in movement")
     {
@@ -86,17 +86,53 @@ TEST_CASE_METHOD(CarFixture, "Get gear")
     REQUIRE(car.GetGear() == -1);
 }
 
-TEST_CASE("Set speed")
+TEST_CASE("Gear and Speed limits")
 {
+    Car car;
+    car.TurnOnEngine();
 
-}
-
-TEST_CASE("Set gear")
-{
-
-}
-
-TEST_CASE("Info")
-{
-
+    car.SetGearWithThrow(1);
+    REQUIRE(car.SetSpeed(0));
+    REQUIRE(car.SetSpeed(30));
+    REQUIRE(!car.SetSpeed(31));
+    CHECK_THROWS(car.SetGearWithThrow(4));
+    car.SetGearWithThrow(2);
+    REQUIRE(car.SetSpeed(20));
+    REQUIRE(car.SetSpeed(50));
+    REQUIRE(!car.SetSpeed(51));
+    car.SetGearWithThrow(3);
+    REQUIRE(car.SetSpeed(30));
+    REQUIRE(car.SetSpeed(60));
+    REQUIRE(!car.SetSpeed(61));
+    CHECK_THROWS(car.SetGearWithThrow(1));
+    car.SetGearWithThrow(4);
+    REQUIRE(car.SetSpeed(40));
+    REQUIRE(car.SetSpeed(90));
+    REQUIRE(!car.SetSpeed(91));
+    car.SetGearWithThrow(5);
+    REQUIRE(car.SetSpeed(50));
+    REQUIRE(car.SetSpeed(150));
+    REQUIRE(!car.SetSpeed(151));
+    car.SetGearWithThrow(0);
+    CHECK_THROWS(car.SetGearWithThrow(-1));
+    REQUIRE(car.SetSpeed(0));
+    car.SetGearWithThrow(-1);
+    REQUIRE(car.SetSpeed(20));
+    REQUIRE(car.SetSpeed(0));
+    REQUIRE(!car.SetSpeed(21));
+    
+    // struct GearTest { int gear; int minSpeed; int maxSpeed; };
+    // auto testData = GENERATE(
+    // GearTest{-1, 20, 0},
+    // GearTest{0, 0, 0},
+    // GearTest{1, 0, 30},
+    // GearTest{2, 20, 50},
+    // GearTest{3, 30, 60},
+    // GearTest{4, 50, 90},
+    // GearTest{5, 60, 150}
+    // );
+    // car.SetGearWithThrow(testData.gear);
+    // REQUIRE(car.SetSpeed(testData.minSpeed));
+    // REQUIRE(car.SetSpeed(testData.maxSpeed));
+    // CHECK_THROWS(car.SetSpeed(testData.maxSpeed + 5));
 }

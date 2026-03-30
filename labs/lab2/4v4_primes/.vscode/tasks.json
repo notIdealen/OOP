@@ -7,11 +7,26 @@
             "command": "g++",
             "args": [
                 "-fdiagnostics-color=always",
-                // "-g",//флаг отладки
                 "${workspaceFolder}/primes.cpp",
                 "${workspaceFolder}/includes/Generator.cpp",
                 "-o", 
                 "${workspaceFolder}/primes",
+            ],
+            "group": {
+                "kind": "build", 
+                "isDefault": true,
+            }
+        },
+        {
+            "label": "TEST",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "${workspaceFolder}/primes_tests.cpp",
+                "${workspaceFolder}/includes/Generator.cpp",
+                "-o", 
+                "${workspaceFolder}/primes_tests",
                 "-I", "D:/_OOP/labs/catch"
             ],
             "group": {

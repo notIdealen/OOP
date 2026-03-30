@@ -3,3 +3,5 @@
 /// Если строка состоит только из пробелов, то присваивает s пустую строку.
 /// @param s - ссылка на строку
 void TrimSpaces(std::string& s);
+
+void TrimAllSpaces(std::string& s);
