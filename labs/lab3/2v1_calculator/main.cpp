@@ -4,10 +4,6 @@
 
 using namespace std;
 
-// using VariablesList = std::map<std::string, double>;
-// using ExpressionsList = std::map<std::string, Expression>;
-
-
 int main(int argc, char const *argv[])
 {
     Controller controller;

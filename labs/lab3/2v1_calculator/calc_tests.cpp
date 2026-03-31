@@ -2,9 +2,30 @@
 #include <iostream>
 
 #include "catch.hpp"
-#include "includes/InputParser.hpp"
+#include "includes/Parser.hpp"
+#include "includes/Calculator.hpp"
+#include "includes/Variable.hpp"
+#include "includes/Function.hpp"
+#include "includes/Expression.hpp"
 
 using namespace std;
+
+TEST_CASE("Parsing string")
+{
+    Parser p;
+    auto testData = GENERATE(
+        "",
+        "  comm   ",
+        "  comm  qw ",
+        "  comm  qw  =  ",
+        "  comm  qw  =  -5 ",
+        "  comm  qw  =  F ",
+        "  comm  qw  =  F+",
+        "  comm  qw  =  F+v"
+    );
+    p.Parse(testData);
+    cout << p.command << endl;
+}
 
 // TEST_CASE("set expression")
 // {
@@ -30,40 +51,40 @@ using namespace std;
 //     }
 // }
 
-TEST_CASE("trim all spaces")
-{   
-    InputParser cp;
-    string s = "  qw e  rt yy   ";
-    cp.TrimAllSpaces(s);
-    REQUIRE( s == "qwertyy");
-}
-TEST_CASE("set name")
-{   
-    InputParser cp;
-    string s1 = " xy";
-    // cp.TrimAllSpaces(s);
-    string s2 = " Ot = x + fn";
-    cp.SetName(s1);
-    REQUIRE( cp.varName == " xy");
-    cp.SetName(s2);
-    REQUIRE( cp.varName == " Ot ");
-}
-TEST_CASE("set values")
-{   
-    InputParser cp;
-    string s0 = " xy";
-    cp.SetValues(s0);
-    REQUIRE( cp.left.empty());
-    cp.ClearFields();
-    string s1 = " =xy";
-    cp.SetValues(s1);
-    REQUIRE( cp.left == "xy");
-    REQUIRE(cp.operation.empty());
-    REQUIRE(cp.right.empty());
-    cp.ClearFields();
-    string s2 = " Ot = x / fn";
-    cp.SetValues(s2);
-    REQUIRE( cp.left == " x ");
-    REQUIRE(cp.operation == "/");
-    REQUIRE(cp.right == " fn");
-}
+// TEST_CASE("trim all spaces")
+// {   
+//     InputParser cp;
+//     string s = "  qw e  rt yy   ";
+//     cp.TrimAllSpaces(s);
+//     REQUIRE( s == "qwertyy");
+// }
+// TEST_CASE("set name")
+// {   
+//     InputParser cp;
+//     string s1 = " xy";
+//     // cp.TrimAllSpaces(s);
+//     string s2 = " Ot = x + fn";
+//     cp.SetName(s1);
+//     REQUIRE( cp.varName == " xy");
+//     cp.SetName(s2);
+//     REQUIRE( cp.varName == " Ot ");
+// }
+// TEST_CASE("set values")
+// {   
+//     InputParser cp;
+//     string s0 = " xy";
+//     cp.SetValues(s0);
+//     REQUIRE( cp.left.empty());
+//     cp.ClearFields();
+//     string s1 = " =xy";
+//     cp.SetValues(s1);
+//     REQUIRE( cp.left == "xy");
+//     REQUIRE(cp.operation.empty());
+//     REQUIRE(cp.right.empty());
+//     cp.ClearFields();
+//     string s2 = " Ot = x / fn";
+//     cp.SetValues(s2);
+//     REQUIRE( cp.left == " x ");
+//     REQUIRE(cp.operation == "/");
+//     REQUIRE(cp.right == " fn");
+// }

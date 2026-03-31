@@ -4,22 +4,23 @@
 #include "Storage.hpp"
 #include "Expression.hpp"
 #include "Parser.hpp"
-#include "Printer.hpp"
 
 class Calculator
 {
 public:
-    void RunVarCommand(Parser& parser);
-    void RunLetCommand(Parser& parser);
-    void RunFnCommand(Parser& parser);
-    void RunPrintCommand(Parser& parser, Printer& printer);
-    void RunPrintvarsCommand(Parser& parser, Printer& printer);
-    // void RunPrintfnsCommand(Parser& parser);
-    
+    void RunVarCommand(std::string& name);
+    void RunLetCommand(std::string& name, std::string& lValue);
+    void RunFnCommand(std::string& name, std::string& lValue, std::string& operation, std::string& rValue);
+
+    const Storage& GetStorage()
+    {
+        return storage;
+    }
+
+    inline static const char validOperations[4] = {'+', '-', '*', '/'};
 private:
-    void PutInStorage(const std::string name, std::unique_ptr<Expression> exp);
+    void PutInStorage(const std::string name, std::shared_ptr<Expression> exp);
 
     Storage storage{};
-    std::optional<double> value{};
 };
 

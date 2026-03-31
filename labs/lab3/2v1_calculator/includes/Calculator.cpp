@@ -1,14 +1,21 @@
 #include "Calculator.hpp"
 #include "Variable.hpp"
+#include "Function.hpp"
 #include <regex>
 #include <charconv>
-// #include <string>
-// #include <iostream>
 
 bool IsValidName(const std::string& name)
 {
     std::regex pattern("^[a-zA-Z_][a-zA-Z0-9_]*$");
     return std::regex_match(name, pattern);
+}
+
+bool IsValidOperation(const char& currOperation)
+{
+    for (const char& op : Calculator::validOperations)
+        if (op == currOperation)
+            return true;
+    return false;
 }
 
 std::optional<double> ToDouble(const std::string& token)
@@ -20,128 +27,77 @@ std::optional<double> ToDouble(const std::string& token)
     return std::nullopt;
 }
 
-void Calculator::PutInStorage(const std::string name, std::unique_ptr<Expression> exp)
+void Calculator::PutInStorage(const std::string name, std::shared_ptr<Expression> exp)
 {
     if (storage.find(name) != storage.end())
         throw std::invalid_argument("Name already exists: " + name);
-    storage[name] = std::move(exp);
+    storage[name] = exp;
 }
 
-void Calculator::RunVarCommand(Parser& parser)
+void Calculator::RunVarCommand(std::string& name)
 {
-    if (!IsValidName(parser.name))
-        throw std::invalid_argument("Invalid usage: " + parser.name);
+    if (!IsValidName(name))
+        throw std::invalid_argument("Invalid usage var: " + name);
 
-    PutInStorage(parser.name, std::make_unique<Variable>(std::nullopt));
+    PutInStorage(name, std::make_shared<Variable>(std::nullopt));
 }
 
-void Calculator::RunLetCommand(Parser& parser)
+void Calculator::RunLetCommand(std::string& name, std::string& lValue)
 {
-    if (!IsValidName(parser.name) || !parser.operation.empty() || !parser.rValue.empty())
-        throw std::invalid_argument("Invalid usage: " + parser.name);
+    if (!IsValidName(name))
+        throw std::invalid_argument("Invalid usage let: " + name);
     
-    if (auto num = ToDouble(parser.lValue); num != std::nullopt)
+    if (auto num = ToDouble(lValue); num != std::nullopt)
     {
-        PutInStorage(parser.name, std::make_unique<Variable>(num.value()));
+        if (auto it = storage.find(name); it != storage.end())
+            dynamic_cast<Variable*>(storage.at(name).get())->SetValue(num.value());
+        else
+            PutInStorage(name, std::make_shared<Variable>(num.value()));
         return;
     }
 
-    if (storage.find(parser.lValue) == storage.end())
-    throw std::invalid_argument("Name does not exist: " + parser.lValue);
+    if (storage.find(lValue) == storage.end())
+        throw std::invalid_argument("Name does not exist: " + lValue);
 
-    if (storage[parser.lValue]->GetType() == "variable")
+    if (storage[lValue]->GetType() == Expression::ExpressionType::variable)
     {
-        PutInStorage(parser.name, std::make_unique<Variable>(storage[parser.lValue]->GetValue()));
+        PutInStorage(name, std::make_shared<Variable>(storage[lValue]->GetValue()));
     }
 }
 
-void Calculator::RunFnCommand(Parser& parser)
+void Calculator::RunFnCommand(std::string& name, std::string& lValue, std::string& operation, std::string& rValue)
 {
-    if (!IsValidName(parser.name))
-        throw std::invalid_argument("Invalid usage: " + parser.name);
+    if (!IsValidName(name))
+        throw std::invalid_argument("Invalid usage fn: " + name);
 
-}
+    if (!IsValidName(lValue))
+        throw std::invalid_argument("Invalid usage fn: " + lValue);
 
-void Calculator::RunPrintCommand(Parser& parser, Printer& printer)
-{
-    if (!IsValidName(parser.name))
-        throw std::invalid_argument("Invalid usage: " + parser.name);
-    
-    if (storage.find(parser.name) == storage.end())
-        throw std::invalid_argument("Name does not exist: " + parser.name);
+    if (operation == "" && rValue == "")
+    {
+        if (storage.find(lValue) == storage.end())
+            throw std::invalid_argument("Name does not exist: " + lValue);
+
+        if (storage[lValue]->GetType() == Expression::ExpressionType::variable)
+            PutInStorage(name, std::make_shared<Function>(storage[lValue]));
+        else if (storage[lValue]->GetType() == Expression::ExpressionType::function)
+            PutInStorage(name, std::make_shared<Function>(storage[lValue]));
+        return;
+    }
+
+    if (operation != "" && rValue != "")
+    {
+        if (!IsValidName(rValue))
+            throw std::invalid_argument("Invalid usage fn: " + rValue);
         
-    printer.Print(storage[parser.name]->GetValue());
+        if (storage.find(rValue) == storage.end())
+            throw std::invalid_argument("Name does not exist: " + lValue);
+
+        if (!IsValidOperation(operation[0]))
+            throw std::invalid_argument("Invalid usage fn: " + rValue);
+
+        PutInStorage(name, std::make_shared<Function>(storage[lValue], storage[rValue], operation[0]));
+        return;
+    }
+    throw std::invalid_argument("Invalid usage fn:");
 }
-
-void Calculator::RunPrintvarsCommand(Parser& parser, Printer& printer)
-{
-    for (const auto& [key, expression] : storage)
-        printer.Print(expression->GetValue());
-}
-// void RunPrintfnsCommand(Parser& parser);
-
-
-
-
-// void Calculator::ParseLine(std::string line)
-// {
-//     parser.TrimCommand(line);
-//     parser.TrimAllSpaces(line);
-//     if (parser.command == "var")
-//     {
-//         parser.SetName(line);
-//         // std::cout << "name:" << parser.varName << std::endl;
-//         if (IsValidName(parser.varName))
-//         {
-//             PutInStorage(std::make_unique<Variable>(std::nullopt));
-//         }
-//         parser.ClearFields();
-//         return;
-//     }
-//     if (parser.command == "let")
-//     {
-//         parser.SetName(line);
-//         parser.SetValues(line);
-//         // std::cout << "name:" << parser.varName << std::endl;
-//         auto num = ConvertStringToDouble(parser.left);
-//         // std::cout << "values:" << parser.left << ' ' << num.value() << std::endl;
-//         if (num != std::nullopt)
-//         {
-//             if (IsValidName(parser.varName))
-//             {
-//                 if (storage.find(parser.left) != storage.end() && storage[parser.left]->GetType() == "variable")
-//                 {
-//                     auto* ptr = storage[parser.left].get();
-//                     Variable* var = static_cast<Variable*>(ptr);
-//                     var->SetValue(num);
-//                     return;
-//                 }
-//                 PutInStorage(std::make_unique<Variable>(num));
-//             }
-//             parser.ClearFields();
-//             return;
-//         }
-//         if (storage.find(parser.left) != storage.end())
-//             PutInStorage(std::make_unique<Variable>(storage[parser.left]->GetValue()));
-//         parser.ClearFields();
-//         return;
-//     }
-//     if (parser.command == "fn"){}
-//     if (parser.command == "print")
-//     {
-//         // std::cout << storage.size() << std::endl;
-//         for (const auto& [k, v] : storage)
-//         {
-//             std::cout << k << ':';
-//             if (auto res = v->GetValue(); res != std::nullopt)
-//                 std::cout << res.value() << std::endl;
-//             else
-//                 std::cout << "nan" << std::endl;
-//         }
-//     }
-//     if (parser.command == "printvars")
-//     {
-
-//     }
-//     if (parser.command == "printfns"){}
-// }

@@ -2,31 +2,19 @@
 
 #include "Expression.hpp"
 #include <string>
-#include <optional>
 
 class Variable : public Expression
 {
 public:
-    Variable() = default;
-    Variable(std::optional<double> num) : m_value{num}
-    {
-    }
+    Variable(std::optional<double> num);
 
-    void SetValue(std::optional<double> num)
-    {
-        m_value = num;
-    }
+    void SetValue(std::optional<double> num);
 
-    std::optional<double> GetValue() const override
-    {
-        return m_value;
-    }
+    std::optional<double> GetValue() const;
 
-    const std::string& GetType() override
-    {
-        return type;
-    }
+    ExpressionType GetType();
+    
 private:
-    inline static const std::string type = "variable";
+    ExpressionType type = ExpressionType::variable;
     std::optional<double> m_value;
 };

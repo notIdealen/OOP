@@ -18,3 +18,7 @@ printfns - имена и значения всех ранее объявленн
 Значение выводится с точностью в 2 знака после запятой
 
 var, let, fn, print, printvars, printfns
+
+enum class for expression
+weak_ptr для shared_ptr
+В кальк сразу передавать значения а не весь парсер

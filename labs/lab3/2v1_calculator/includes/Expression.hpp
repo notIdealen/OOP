@@ -1,14 +1,20 @@
 #pragma once
 
-#include <map>
 #include <optional>
+#include <string>
 
 class Expression
 {
 public:
+    enum class ExpressionType: char 
+    { 
+        function = 'f',
+        variable = 'v'
+    };
+    
     virtual std::optional<double> GetValue() const = 0;
+    virtual ExpressionType GetType() = 0;
+
     virtual ~Expression() = default;
-    virtual const std::string& GetType() = 0;
+
 };
-
-
