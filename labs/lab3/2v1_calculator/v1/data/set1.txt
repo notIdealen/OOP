@@ -1,0 +1,8 @@
+let x=5
+let y=2
+fn f1=x*y
+fn f2 = f1*y
+fn f3=f2+f1
+fn f4=f3*f1
+printfns
+printfns

@@ -24,7 +24,7 @@ std::optional<double> Function::GetValue() const
         return left;
 
     std::optional<double> right = m_right->GetValue();
-    if (!left.has_value())
+    if (!right.has_value())
         return std::nullopt;
 
     switch (m_operation)

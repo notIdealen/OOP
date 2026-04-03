@@ -1,0 +1,65 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "BUILD",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "${workspaceFolder}/main.cpp",
+                "${workspaceFolder}/includes/Calculator.cpp",
+                "${workspaceFolder}/includes/Function.cpp",
+                "${workspaceFolder}/includes/Variable.cpp",
+                "${workspaceFolder}/includes/Controller.cpp",
+                "${workspaceFolder}/includes/Printer.cpp",
+                "${workspaceFolder}/includes/Parser.cpp",
+                "-o", 
+                "${workspaceFolder}/calc",
+            ],
+            "group": {
+                "kind": "build", 
+                "isDefault": true,
+            }
+        },
+        {
+            "label": "DEBUG",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${workspaceFolder}/dbg.cpp",
+                "${workspaceFolder}/includes/InputParser.cpp",
+                "-o", 
+                "${workspaceFolder}/dbg",
+            ],
+            "group": {
+                "kind": "build", 
+                "isDefault": true,
+            }
+        },
+        {
+            "label": "TEST",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "${workspaceFolder}/calc_tests.cpp",
+                "${workspaceFolder}/includes/Calculator.cpp",
+                "${workspaceFolder}/includes/Function.cpp",
+                "${workspaceFolder}/includes/Variable.cpp",
+                "${workspaceFolder}/includes/Controller.cpp",
+                "${workspaceFolder}/includes/Printer.cpp",
+                "${workspaceFolder}/includes/Parser.cpp",
+                "-o", 
+                "${workspaceFolder}/calc_tests",
+                "-I", "D:/_OOP/labs/catch"
+            ],
+            "group": {
+                "kind": "build", 
+                "isDefault": true,
+            }
+        }
+    ]
+}

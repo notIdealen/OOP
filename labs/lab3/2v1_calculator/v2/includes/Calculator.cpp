@@ -27,6 +27,11 @@ std::optional<double> ToDouble(const std::string& token)
     return std::nullopt;
 }
 
+// void Calculator::PutInCache(const std::string name, std::optional<double> value)
+// {
+//     cache[name] = value;
+// }
+
 void Calculator::PutInStorage(const std::string name, std::shared_ptr<Expression> exp)
 {
     if (storage.find(name) != storage.end())
@@ -79,7 +84,11 @@ void Calculator::RunFnCommand(std::string& name, std::string& lValue, std::strin
             throw std::invalid_argument("Name does not exist: " + lValue);
 
         if (storage[lValue]->GetType() == Expression::ExpressionType::variable)
+        {
             PutInStorage(name, std::make_shared<Function>(storage[lValue]));
+            cache[name][lValue] = storage[lValue]->GetValue();
+            // PutInCache(name, storage[lValue]->GetValue());////////////////////////////////
+        }
         else if (storage[lValue]->GetType() == Expression::ExpressionType::function)
             PutInStorage(name, std::make_shared<Function>(storage[lValue]));
         return;

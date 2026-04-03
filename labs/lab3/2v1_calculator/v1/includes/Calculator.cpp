@@ -1,0 +1,113 @@
+#include "Calculator.hpp"
+#include "Variable.hpp"
+#include "Function.hpp"
+#include <regex>
+#include <charconv>
+
+const Storage& Calculator::GetStorage()
+{
+    return storage;
+}
+
+bool Calculator::IsNameExist(const std::string& name)
+{
+    return !(storage.find(name) == storage.end());
+}
+
+bool Calculator::IsValidName(const std::string& name)
+{
+    std::regex pattern("^[a-zA-Z_][a-zA-Z0-9_]*$");
+    return std::regex_match(name, pattern);
+}
+
+bool Calculator::IsValidOperation(const char& currOperation)
+{
+    for (const char& op : Calculator::validOperations)
+        if (op == currOperation)
+            return true;
+    return false;
+}
+
+std::optional<double> Calculator::ToDouble(const std::string& token)
+{
+    double d;
+    auto [ptr, ec] = std::from_chars(token.data(), token.data() + token.size(), d);
+    if (ec == std::errc{})
+        return d;
+    return std::nullopt;
+}
+
+void Calculator::PutInStorage(const std::string name, std::shared_ptr<Expression> exp)
+{
+    if (storage.find(name) != storage.end())
+        throw std::invalid_argument("Name already exists: " + name);
+    storage[name] = exp;
+}
+
+void Calculator::RunVarCommand(std::string& name)
+{
+    if (!IsValidName(name))
+        throw std::invalid_argument("Invalid usage var: " + name);
+
+    PutInStorage(name, std::make_shared<Variable>(std::nullopt));
+}
+
+void Calculator::RunLetCommand(std::string& name, std::string& lValue)
+{
+    if (!IsValidName(name))
+        throw std::invalid_argument("Invalid usage let: " + name);
+    
+    if (auto num = ToDouble(lValue); num != std::nullopt)
+    {
+        if (IsNameExist(name))
+            dynamic_cast<Variable*>(storage.at(name).get())->SetValue(num.value());
+        else
+            PutInStorage(name, std::make_shared<Variable>(num.value()));
+        return;
+    }
+
+    if (!IsNameExist(lValue))
+        throw std::invalid_argument("Name does not exist: " + lValue);
+
+    if (storage[lValue]->GetType() == Expression::ExpressionType::variable)
+    {
+        dynamic_cast<Variable*>(storage.at(name).get())->SetValue(storage[lValue]->GetValue());
+    }
+}
+
+void Calculator::RunFnCommand(std::string& name, std::string& lValue, std::string& operation, std::string& rValue)
+{
+    if (!IsValidName(name))
+        throw std::invalid_argument("Invalid usage fn: " + name);
+
+    if (!IsValidName(lValue))
+        throw std::invalid_argument("Invalid usage fn: " + lValue);
+
+    if (operation == "" && rValue == "")
+    {
+        if (!IsNameExist(lValue))
+            throw std::invalid_argument("Name does not exist: " + lValue);
+
+        if (storage[lValue]->GetType() == Expression::ExpressionType::variable)
+            PutInStorage(name, std::make_shared<Function>(storage[lValue]));
+        else if (storage[lValue]->GetType() == Expression::ExpressionType::function)
+            PutInStorage(name, std::make_shared<Function>(storage[lValue]));
+        return;
+    }
+
+    if (operation != "" && rValue != "")
+    {
+        if (!IsValidName(rValue))
+            throw std::invalid_argument("Invalid usage fn: " + rValue);
+        
+        if (!IsNameExist(rValue))
+            throw std::invalid_argument("Name does not exist: " + lValue);
+
+        if (!IsValidOperation(operation[0]))
+            throw std::invalid_argument("Invalid usage fn: " + rValue);
+
+        PutInStorage(name, std::make_shared<Function>(storage[lValue], storage[rValue], operation[0]));
+        return;
+    }
+    throw std::invalid_argument("Invalid usage fn:");
+}
