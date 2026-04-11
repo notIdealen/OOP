@@ -1,7 +1,20 @@
 #include <stdexcept>
 #include "Controller.hpp"
 #include "Storage.hpp"
+#include "Function.hpp"
 // #include <iostream>
+
+bool IsCurrectVariables(Storage& storage, std::string& name, std::shared_ptr<Expression> fn)
+{
+    for (auto& [key, value] : fn->GetVariablesList())
+    {
+        if (storage[key]->GetValue().value() != value.value())
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
 void Controller::ReadLine(const std::string& line)
 {
@@ -18,29 +31,9 @@ void Controller::RunCommand()
         calc.RunFnCommand(parser.name, parser.lValue, parser.operation, parser.rValue);
     else if (parser.command == "print")
     {
-        Storage storage = calc.GetStorage();
         if (!calc.IsNameExist(parser.name))
             throw std::invalid_argument("Name does not exist: " + parser.name);
-
-        if (storage[parser.name]->GetType() == Expression::ExpressionType::variable)
-        {
-            printer.Print(storage[parser.name]->GetValue());
-            return;
-        }
-
-        auto& fn = storage[parser.name];
-        for (auto& [key, value] : fn->GetVariablesList())
-        {
-            if (storage[key]->GetValue().value() != value.value())
-            {
-                printer.Print(storage[parser.name]->GetValue());
-                return;
-            }
-        }
-        if (fn->GetCache().has_value())
-            printer.Print(fn->GetCache());
-        else
-            printer.Print(storage[parser.name]->GetValue());
+        printer.Print(calc.GetValue(parser.name));
     }
     else if (parser.command == "printvars")
     {

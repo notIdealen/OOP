@@ -4,6 +4,22 @@
 #include <regex>
 #include <charconv>
 
+std::optional<double> Calculator::GetValue(const std::string& name)
+{
+    std::shared_ptr<Expression> fn = storage[name];
+    for (auto& [key, value] : fn->GetVariablesList())
+        if (storage[key]->GetValue().value() != value.value())
+            return storage[name]->GetValue();
+
+    if (!fn->GetCache().has_value())
+        return storage[name]->GetValue();
+
+    if (storage[name]->GetType() == Expression::ExpressionType::variable)
+        return storage[name]->GetValue();
+
+    return fn->GetCache();
+}
+
 const Storage& Calculator::GetStorage()
 {
     return storage;

@@ -1,0 +1,5 @@
+circle 55.78 66.6974 1 00ffe0 1100aa
+circle 0 0 3 00ffe0 1100aa
+triangle 0 0 3 0 0 4 00ffe0 1100aa
+rectangle 1 2 10 5 00ffe0 1100aa
+line 0 0 0 4 00ffe0

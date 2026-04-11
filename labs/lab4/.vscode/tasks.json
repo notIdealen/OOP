@@ -1,0 +1,60 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "BUILD",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "${workspaceFolder}/main.cpp",
+                "${workspaceFolder}/includes/Controller.cpp",
+                "${workspaceFolder}/includes/CCircle.cpp",
+                "${workspaceFolder}/includes/CTriangle.cpp",
+                "${workspaceFolder}/includes/CRectangle.cpp",
+                "${workspaceFolder}/includes/CLineSegment.cpp",
+                "${workspaceFolder}/includes/ShapeFactory.cpp",
+                "-o", 
+                "${workspaceFolder}/START",
+            ],
+            "group": {
+                "kind": "build", 
+                "isDefault": true,
+            }
+        },
+        {
+            "label": "DEBUG",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${workspaceFolder}/dbg.cpp",
+                // "${workspaceFolder}/includes/Controller.cpp",
+                "-o", 
+                "${workspaceFolder}/dbg",
+            ],
+            "group": {
+                "kind": "build", 
+                "isDefault": true,
+            }
+        },
+        {
+            "label": "TEST",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "${workspaceFolder}/tests.cpp",
+                // "${workspaceFolder}/includes/Calculator.cpp",
+                "-o", 
+                "${workspaceFolder}/tests",
+                "-I", "D:/_OOP/labs/catch"
+            ],
+            "group": {
+                "kind": "build", 
+                "isDefault": true,
+            }
+        }
+    ]
+}

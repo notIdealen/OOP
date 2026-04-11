@@ -7,6 +7,7 @@
 #include "includes/Function.hpp"
 #include "includes/Expression.hpp"
 #include "includes/Controller.hpp"
+#include <sstream>
 
 using namespace std;
 
@@ -124,4 +125,17 @@ TEST_CASE("Parsing string")
         p.rValue == testData.rValue
     ));
 }
+
+TEST_CASE("Calculation")
+{
+    Calculator calc;
+    SECTION("cache test")
+    {
+        // calc.PutInStorage()
+    }
+    SECTION("closure")
+    {
+    }
+}
+
 

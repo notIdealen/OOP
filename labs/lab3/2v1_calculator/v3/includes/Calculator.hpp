@@ -18,6 +18,8 @@ public:
     std::optional<double> ToDouble(const std::string& token);
     bool IsNameExist(const std::string& name);
 
+    std::optional<double> GetValue(const std::string& name);
+
 private:
     inline static const char validOperations[4] = {'+', '-', '*', '/'};
     Storage storage{};

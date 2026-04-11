@@ -39,7 +39,7 @@ std::optional<double> Function::GetValue() const
     std::optional<double> left = m_left->GetValue();
     if (!left.has_value())
     {
-        cache = left;
+        cache = std::nullopt;
         return std::nullopt;
     }
 
@@ -52,7 +52,7 @@ std::optional<double> Function::GetValue() const
     std::optional<double> right = m_right->GetValue();
     if (!right.has_value())
     {
-        cache = right;
+        cache = std::nullopt;
         return std::nullopt;
     }
 

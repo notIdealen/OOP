@@ -2,10 +2,13 @@ let x=5
 let y=2
 fn f1=x*y
 printfns
-fn f2 = f1*y
-fn f3=f2+f1
+fn f2 = f1
+fn f1=f2
+printfns
+
 fn f4=f3*f1
 print f4
 print f4
 print f4
 printfns
+

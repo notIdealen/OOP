@@ -41,10 +41,10 @@ fn f37=f36+f35
 fn f38=f37+f36
 fn f39=f38+f37
 fn f40=f39+f38
-fn f41=f40+f39
-print f41
-print f41
+print f40
+print f40
 
+fn f41=f40+f39
 fn f42=f41+f40
 fn f43=f42+f41
 fn f44=f43+f42
