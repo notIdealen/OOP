@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "includes/Controller.hpp"
+// #include "includes/CCanvas.hpp"
 
 using namespace std;
 
@@ -36,8 +37,6 @@ int main(int argc, char const *argv[])
         controller.DrawAllShapes();
         window.display();
     }
-    // window.draw(rect);
-    // sf::sleep(sf::seconds(5));
     return 0;
 }
 //Get-Content data/picture.txt | .\START.exe

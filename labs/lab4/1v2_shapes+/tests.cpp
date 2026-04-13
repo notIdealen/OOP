@@ -11,6 +11,9 @@
 #include "includes/CTriangle.hpp"
 #include "includes/CRectangle.hpp"
 #include "includes/CLineSegment.hpp"
+#include "includes/MockCanvas.hpp"
+
+sf::RenderWindow window(sf::VideoMode({10, 10}), "test");
 
 using namespace std;
 
@@ -18,7 +21,7 @@ TEST_CASE("insert new shape")
 {
     SECTION("insert circle")
     {
-        Controller controller; 
+        Controller controller(window); 
         struct TestStruct {
             std::string input;
             bool result;
@@ -38,7 +41,8 @@ TEST_CASE("insert new shape")
     }
     SECTION("insert triangle")
     {
-        Controller controller; 
+        sf::RenderWindow window(sf::VideoMode({10, 10}), "test");
+        Controller controller(window); 
         struct TestStruct {
             std::string input;
             bool result;
@@ -57,7 +61,8 @@ TEST_CASE("insert new shape")
     }
     SECTION("insert rectangle")
     {
-        Controller controller; 
+        sf::RenderWindow window(sf::VideoMode({10, 10}), "test");
+        Controller controller(window);  
         struct TestStruct {
             std::string input;
             bool result;
@@ -77,7 +82,8 @@ TEST_CASE("insert new shape")
     }
     SECTION("insert line")
     {
-        Controller controller; 
+        sf::RenderWindow window(sf::VideoMode({10, 10}), "test");
+        Controller controller(window); 
         struct TestStruct {
             std::string input;
             bool result;
@@ -97,7 +103,8 @@ TEST_CASE("insert new shape")
 
 TEST_CASE("Shape with max area")
 {
-    Controller controller;
+    sf::RenderWindow window(sf::VideoMode({10, 10}), "test");
+    Controller controller(window); 
     string shapes[4]{
         "line 2.9856 3.96247 10 9.97 0000ff",
         "rectangle 0 0 10 15.5 000001 0000ff",
@@ -122,7 +129,8 @@ TEST_CASE("Shape with max area")
 
 TEST_CASE("Shape with min perimeter")
 {
-    Controller controller;
+    sf::RenderWindow window(sf::VideoMode({10, 10}), "test");
+    Controller controller(window); 
     string shapes[4]{
         "line 2.9856 3.96247 10 1000 0000ff",
         "rectangle 0 0 10 15.5 000001 0000ff",
@@ -266,4 +274,19 @@ TEST_CASE("Print shape")
 )";
     REQUIRE(info == result);
     }
+}
+
+TEST_CASE("Canvas")
+{
+    MockCanvas mc;
+    mc.DrawCircle({100, 100}, 100, 0x00ff00);
+    REQUIRE(mc.m_line == "100 100 100 00ff00");
+    mc.DrawLine({100.25, 100.50}, {100, 100}, 0x00ff00);
+    REQUIRE(mc.m_line == "100.25 100.5 100 100 00ff00");
+    mc.DrawPolygon({{100, 102}, {300, 301}, {500, 500}}, 0x00ff00);
+    REQUIRE(mc.m_line == "100 102 300 301 500 500 00ff00");
+    mc.FillCircle({100, 100}, 100, 0x00ff00);
+    REQUIRE(mc.m_line == "100 100 100 00ff00");
+    mc.FillPolygon({{100, 102}, {300, 301}, {500, 500}}, 0x00ff00);
+    REQUIRE(mc.m_line == "100 102 300 301 500 500 00ff00");
 }
