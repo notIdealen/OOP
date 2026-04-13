@@ -1,0 +1,9 @@
+@echo off
+set SFML=C:\SFML302
+g++ src/main.cpp ^
+src/include/tinyxml/tinyxml2.cpp ^
+src/include/level/level.cpp ^
+src/include/enemy/Enemy.cpp ^
+src/include/player/Player.cpp ^
+src/include/collision/Collision.cpp ^
+-o game.exe -IC:\SFML302\include -LC:\SFML302\lib -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-system
