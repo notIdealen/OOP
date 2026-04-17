@@ -19,16 +19,6 @@ double CTriangle::GetPerimeter() const
     return CalculateLength(m_vertex1, m_vertex2) + CalculateLength(m_vertex2, m_vertex3) + CalculateLength(m_vertex3, m_vertex1);
 }
 
-uint32_t CTriangle::GetOutlineColor() const
-{
-    return m_outlineColor;
-}
-
-uint32_t CTriangle::GetFillColor() const
-{
-    return m_fillColor;
-}
-
 CPoint CTriangle::GetVertex1() const
 {
     return m_vertex1;

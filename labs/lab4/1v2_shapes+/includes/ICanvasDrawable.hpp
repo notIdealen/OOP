@@ -8,6 +8,4 @@ public:
     virtual void Draw(ICanvas& canvas) = 0;
 
     ~ICanvasDrawable() = default;
-protected:
-    ICanvasDrawable() = default;
 };

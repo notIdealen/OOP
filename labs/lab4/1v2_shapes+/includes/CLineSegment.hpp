@@ -1,22 +1,21 @@
 #pragma once
 
 #include <string>
-#include "IShape.hpp"
+#include "Shape.hpp"
 #include "CPoint.hpp"
-// #include "ICanvasDrawable.hpp"
 
-class CLineSegment : public IShape//, public ICanvasDrawable
+class CLineSegment : public Shape
 {
 public:
-    CLineSegment(double startX, double startY, double endX, double endY, uint32_t shapeColor) :
+    CLineSegment(double startX, double startY, double endX, double endY, uint32_t outlineColor) :
     m_startPoint{startX, startY},
     m_endPoint{endX, endY},
-    m_outlineColor{shapeColor}
+    Shape(outlineColor)
     {}
+    
     double GetArea() const final;
     double GetPerimeter() const final;
     std::string ToString() final;
-    uint32_t GetOutlineColor() const final;
     
     CPoint GetStartPoint() const;
     CPoint GetEndPoint() const;
@@ -27,5 +26,4 @@ public:
 private:
     CPoint m_startPoint;
     CPoint m_endPoint;
-    uint32_t m_outlineColor;
 };

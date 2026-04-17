@@ -14,8 +14,10 @@ public:
     m_canvas(window)
     {};
     bool InsertShape(std::string& line);
-    std::string GetShapeWithMinPerimeter();
-    std::string GetShapeWithMaxArea();
+    IShape* GetShapeWithMinPerimeter();
+    // std::string GetShapeWithMinPerimeter();
+    IShape* GetShapeWithMaxArea();
+    // std::string GetShapeWithMaxArea();
     void PrintShapes(std::ostream& out);
 
     void DrawAllShapes();

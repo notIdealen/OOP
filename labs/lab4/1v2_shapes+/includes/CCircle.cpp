@@ -14,16 +14,6 @@ double CCircle::GetPerimeter() const
     return 2 * CCircle::s_PI * m_radius;
 }
 
-uint32_t CCircle::GetOutlineColor() const
-{
-    return m_outlineColor;
-}
-
-uint32_t CCircle::GetFillColor() const
-{
-    return m_fillColor;
-}
-
 CPoint CCircle::GetCenter() const
 {
     return m_centerPoint;

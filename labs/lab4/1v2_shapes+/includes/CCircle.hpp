@@ -1,27 +1,24 @@
 #pragma once
 
 #include <string>
-#include "ISolidShape.hpp"
-// #include "ICanvasDrawable.hpp"
 #include "ICanvas.hpp"
 #include "CPoint.hpp"
+#include "Shape.hpp"
+#include "SolidShape.hpp"
 
-class CCircle : public ISolidShape//, public ICanvasDrawable
+class CCircle : public Shape, public SolidShape
 {
 public:
     CCircle(double x, double y, double r, uint32_t shapeColor, uint32_t solidColor) : 
     m_centerPoint{x, y}, 
     m_radius{r},
-    m_outlineColor{shapeColor},
-    m_fillColor{solidColor}
+    Shape{shapeColor},
+    SolidShape{solidColor}
     {}; 
 
     double GetArea() const final;
     double GetPerimeter() const final;
     std::string ToString() final;
-    uint32_t GetOutlineColor() const final;
-
-    uint32_t GetFillColor() const final;
 
     CPoint GetCenter() const;
     double GetRadius() const;
@@ -33,9 +30,4 @@ public:
 private:
     double m_radius;
     CPoint m_centerPoint;
-    uint32_t m_outlineColor;
-    uint32_t m_fillColor;
-
-    //sf::CircleShape circle; скорее всего не нунжно, этим занимается канвас
-    //std::unique_ptr<ICanvasDrawable> icd;
 };

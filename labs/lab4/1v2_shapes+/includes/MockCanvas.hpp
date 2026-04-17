@@ -16,6 +16,4 @@ public:
     void FillCircle(CPoint center, double radius, uint32_t fillColor) override;
 
     std::string m_line;
-    // std::vector<std::string>& target;
-    // uint32_t color;
 };

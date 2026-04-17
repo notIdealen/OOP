@@ -53,7 +53,7 @@ TEST_CASE("insert new shape")
             TestStruct{"triangle 2.9856 3.96247 5.25 7.666 0 0 1000001 0000ff", false},
             TestStruct{"triangle 2.9856 3.96247 5.25 7.666 0 0 000001 10000ff", false},
             TestStruct{"triaQgle 2.9856 3.96247 5.25 7.666 0 0 000001 10000ff", false},
-            TestStruct{"triaQgle 0 0 1 1 2 2 000001 10000ff", false}
+            TestStruct{"triangle 0 0 1 1 2 2 000001 10000ff", false}
         );
         bool isInsert = controller.InsertShape(testData.input);
         CAPTURE(testData.input);
@@ -114,17 +114,8 @@ TEST_CASE("Shape with max area")
     for (auto& sh : shapes)
         controller.InsertShape(sh);
 
-    string result = R"(rectangle:
-  Top-left vertex: (0, 0)
-  width: 10
-  height: 15.5
-  outline: 000001
-  fill: 0000FF
-  Area: 155.00
-  Perimeter: 51.00
----------------------------
-)";
-    REQUIRE(controller.GetShapeWithMaxArea() == result);
+    auto result = 155.00;
+    REQUIRE(controller.GetShapeWithMaxArea()->GetArea() == result);
 }
 
 TEST_CASE("Shape with min perimeter")
@@ -140,17 +131,8 @@ TEST_CASE("Shape with min perimeter")
     for (auto& sh : shapes)
         controller.InsertShape(sh);
 
-    string result = R"(triangle:
-  vertex1: (0, 0)
-  vertex2: (0, 3)
-  vertex3: (4, 0)
-  outline: 000001
-  fill: 0000FF
-  Area: 6.00
-  Perimeter: 12.00
----------------------------
-)";
-    REQUIRE(controller.GetShapeWithMinPerimeter() == result);
+    auto result = 12.00;
+    REQUIRE(controller.GetShapeWithMinPerimeter()->GetPerimeter() == result);
 }
 
 TEST_CASE("calculate area")

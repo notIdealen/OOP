@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "includes/Controller.hpp"
-// #include "includes/CCanvas.hpp"
 
 using namespace std;
 
@@ -18,11 +17,17 @@ int main(int argc, char const *argv[])
         if (line.empty()) break;
         if (!controller.InsertShape(line))
             cout << "Shape dont insert.\n";
-
     }
     controller.PrintShapes(std::cout);
-    cout << "Shape with minimum perimeter is " << controller.GetShapeWithMinPerimeter();
-    cout << "Shape with maximum area is " << controller.GetShapeWithMaxArea();
+    if (IShape* minPerimeter = controller.GetShapeWithMinPerimeter(); minPerimeter)
+        cout << "Shape with minimum perimeter: " << fixed << setprecision(2) << minPerimeter->GetPerimeter() << endl;
+    else
+        cout << "No Shapes in storage.\n";
+        
+    if (IShape* maxArea = controller.GetShapeWithMaxArea(); maxArea)
+        cout << "Shape with maximum area: " << fixed << setprecision(2) << maxArea->GetArea() << endl;
+    else
+        cout << "No Shapes in storage.\n";
 
     while (window.isOpen())
     {
